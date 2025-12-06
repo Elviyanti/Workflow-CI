@@ -1,33 +1,38 @@
 name: MLflow CI Training
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   train:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
+      # Conda environment
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: "3.10"
+          auto-update-conda: false
+          environment-file: conda.yml
+          activate-environment: mlflow-env   # nama dari conda.yml
+          use-mamba: true
 
-    - name: Install MLflow
-      run: |
-        pip install mlflow scikit-learn pandas numpy
+      - name: Install dependencies (pip)
+        run: |
+          pip install mlflow
 
-    - name: Run MLflow Project
-      run: |
-        mlflow run MLProject -e main
+      - name: Run MLflow Project
+        run: |
+          mlflow run . --env-manager=local
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: trained-model
-        path: mlruns/
+      - name: Upload MLflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: model_artifacts
+          path: mlruns/
