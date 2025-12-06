@@ -1,4 +1,4 @@
-name: Workflow_CI
+name: Workflow_CI_training
 
 entry_points:
   main:
