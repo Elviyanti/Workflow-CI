@@ -1,7 +1,7 @@
-name: mlflow-ci-project
+name: heart-project
 
 entry_points:
   main:
-    parameters: {}
     command: "python modelling.py"
 
+conda_env: conda.yaml
