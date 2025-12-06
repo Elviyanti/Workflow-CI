@@ -10,29 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      # Conda environment
-      - name: Setup Miniconda
+      - name: Setup Conda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.10"
-          auto-update-conda: false
-          environment-file: conda.yml
-          activate-environment: mlflow-env   # nama dari conda.yml
+          auto-update-conda: true
+          activate-environment: ""
           use-mamba: true
 
-      - name: Install dependencies (pip)
+      - name: Install MLflow and dependencies
         run: |
-          pip install mlflow
+          pip install mlflow scikit-learn pandas seaborn matplotlib numpy
 
-      - name: Run MLflow Project
+      - name: Run MLflow Project (NO conda activate error)
         run: |
-          mlflow run . --env-manager=local
+          cd MLProject
+          mlflow run . -P data_path=heartdataset_preprocessing.csv --env-manager=local
 
-      - name: Upload MLflow artifacts
+      - name: Upload MLflow Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: model_artifacts
-          path: mlruns/
+          path: MLProject/mlruns
