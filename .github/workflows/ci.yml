@@ -20,13 +20,14 @@ jobs:
           activate-environment: ""
           use-mamba: true
 
-      - name: Install MLflow and dependencies
+      - name: Install MLflow & dependencies
         run: |
           pip install mlflow scikit-learn pandas seaborn matplotlib numpy
 
-      - name: Run MLflow Project (NO conda activate error)
+      - name: Run MLflow Project 
         run: |
-          mlflow run . --env-manager=local
+          cd MLProject
+          mlflow run . -P data_path=heartdataset_preprocessing.csv --env-manager=local
 
       - name: Upload MLflow Artifacts
         uses: actions/upload-artifact@v4
