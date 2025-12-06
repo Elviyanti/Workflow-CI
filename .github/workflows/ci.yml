@@ -13,18 +13,21 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Install micromamba (replacement for conda)
+      uses: mamba-org/setup-micromamba@v1
       with:
-        python-version: "3.10"
+        micromamba-version: "1.5.0"
+        environment-name: base
+        init-shell: bash
 
-    - name: Install MLflow
+    - name: Install MLflow and dependencies
       run: |
-        pip install mlflow scikit-learn pandas numpy
+        micromamba install -y python=3.10
+        pip install mlflow
 
     - name: Run MLflow Project
       run: |
-        mlflow run MLProject -e main
+        mlflow run . -e main
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
