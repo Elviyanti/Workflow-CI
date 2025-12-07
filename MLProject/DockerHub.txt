@@ -1,1 +1,1 @@
-https://hub.docker.com/repository/docker/elviyanti/heart-model/general
+https://hub.docker.com/r/elviyanti/heart-model
