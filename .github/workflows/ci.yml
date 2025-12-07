@@ -35,11 +35,12 @@ jobs:
           name: model_artifacts
           path: MLProject/mlruns
 
-      - name: Get Latest MLflow Run Path
-        id: get_run
+      - name: Get Latest MLflow Model Path
+        id: get_model
         run: |
-          run_path=$(find MLProject/mlruns/0 -maxdepth 1 -mindepth 1 -type d | sort -r | head -n 1)
-          echo "run_path=$run_path" >> $GITHUB_OUTPUT
+          model_path=$(find MLProject/mlruns/0/models -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)
+          echo "model_path=$model_path/artifacts" >> $GITHUB_OUTPUT
+      
 
       - name: Enable Docker (Docker is preinstalled)
         run: |
@@ -52,15 +53,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: DEBUG MLflow Folder
-        run: |
-          echo "===== MLProject/mlruns ====="
-          ls -R MLProject/mlruns
-
       - name: Build Docker Image Using MLflow
         run: |
           mlflow models build-docker \
-            -m ${{ steps.get_run.outputs.run_path }}/artifacts/model \
+            -m ${{ steps.get_model.outputs.model_path }} \
             -n heart-model:latest
 
       - name: Tag Docker Image
