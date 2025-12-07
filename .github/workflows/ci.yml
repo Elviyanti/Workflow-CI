@@ -35,11 +35,11 @@ jobs:
           name: model_artifacts
           path: MLProject/mlruns
 
-      - name: Find Latest MLflow Run ID
+      - name: Get Latest MLflow Run Path
         id: get_run
         run: |
-          latest_run=$(ls -td MLProject/mlruns/0/* | head -n 1)
-          echo "run_path=$latest_run" >> $GITHUB_OUTPUT
+          run_path=$(find MLProject/mlruns/0 -maxdepth 1 -mindepth 1 -type d | sort -r | head -n 1)
+          echo "run_path=$run_path" >> $GITHUB_OUTPUT
 
       - name: Enable Docker (Docker is preinstalled)
         run: |
