@@ -1,1 +1,1 @@
-https://hub.docker.com/repository/docker/elviyanti/workflow-ci
+https://hub.docker.com/repository/docker/elviyanti/heart-model/general
