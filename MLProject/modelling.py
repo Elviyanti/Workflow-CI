@@ -29,7 +29,7 @@ for n in n_estimators_options:
         for split in min_samples_split_options:
             for leaf in min_samples_leaf_options:
 
-                with mlflow.start_run():
+                with mlflow.start_run(nested=True):
 
                     # Build model
                     model = RandomForestClassifier(
