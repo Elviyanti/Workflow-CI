@@ -35,10 +35,6 @@ jobs:
           name: model_artifacts
           path: MLProject/mlruns
 
-      #######################################################
-      #                 ADVANCED SECTION                    #
-      #######################################################
-
       - name: Find Latest MLflow Run ID
         id: get_run
         run: |
